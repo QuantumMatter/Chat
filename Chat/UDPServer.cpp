@@ -71,6 +71,7 @@ void *UDPServer::listening_handler(void *sock)
         if (readCallback != NULL) {
             readCallback(msg);
         }
+        bzero(message, BUFSIZE);
     }
     return 0;
 }

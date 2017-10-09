@@ -20,6 +20,7 @@ using namespace std;
 
 WINDOW *feed;
 WINDOW *input;
+static ScrollWindow *scrollWindow;
 
 string printableIP(struct in_addr addr) {
     return inet_ntoa(addr);
@@ -28,34 +29,14 @@ string printableIP(struct in_addr addr) {
 void udpRead(UDPMessage *msg) {
     string ip = printableIP(msg->cliaddr->sin_addr);
     string console = ip + ": " + msg->message;
-    cout<<console<<endl;
-}
-
-int line = 0;
-List<string> lines;
-void addLineToFeed(WINDOW *win, string str) {
-    lines.addCopy(str);
-    //If window is full, move everything up one line
-    for (int i = 0; i < min(LINES - 4, lines.count()+1); i++) {
-        string *newline = lines.get(lines.count() - 1);
-        wmove(feed, LINES - 4 - i, 0);
-        for (int j = 0; j < newline->length(); j++) {
-            waddch(feed, (*newline)[j]);
-        }
-    }
-}
-
-void zeroFill(char *arr, int size) {
-    for (int i = 0; i < size; i++) {
-        arr[i] = '\0';
-    }
-}
-
-void writeToInput(string str) {
-    
+    scrollWindow->addLine(console, TRUE);
 }
 
 int main(int argc, const char * argv[]) {
+    //Set up UDP Server
+    UDPServer *server = new UDPServer(12345);
+    server->readCallback = udpRead;
+    
     //Initialize Curses
     initscr();
     //Capture special keys: ie DEL, Arrows
@@ -65,7 +46,7 @@ int main(int argc, const char * argv[]) {
         //Scrolling feed
         //User input
     feed = newwin(LINES-2, COLS, 0, 0);//Down to bottom - 2 lines
-    ScrollWindow *scroll = new ScrollWindow(feed, LINES-2, COLS);
+    scrollWindow = new ScrollWindow(feed, LINES-2, COLS);
     input = newwin(1, COLS, LINES-1, 0);//Last line
     
     //Fill second to last line with flat line
@@ -84,10 +65,10 @@ int main(int argc, const char * argv[]) {
             continue;
             //NO INPUT
         } else if (c == KEY_UP) {
-            scroll->scrollUp();
+            scrollWindow->scrollUp();
             continue;
         } else if (c == KEY_DOWN) {
-            scroll->scrollDown();
+            scrollWindow->scrollDown();
             continue;
         } else if ((c == KEY_DC) || (c == 127)) {
             str = str.substr(0, str.length()-1);
@@ -107,7 +88,12 @@ int main(int argc, const char * argv[]) {
         }
         
         //Print new message in feed
-        scroll->addLine(str, true);
+        //scrollWindow->addLine(str, true);
+        
+        //Broadcast new message
+        char *cstr = new char[str.length()];
+        strcpy(cstr, str.c_str());
+        server->broadcast(cstr);
         
         //Clear input
         wmove(input, 0, 0);
