@@ -11,6 +11,7 @@
 #include <ncurses.h>
 #include <signal.h>
 #include <math.h>
+#include <cstring>
 
 #include "UDPServer.h"
 #include "UDPMessage.h"
@@ -36,26 +37,26 @@ int main(int argc, const char * argv[]) {
     //Set up UDP Server
     UDPServer *server = new UDPServer(12345);
     server->readCallback = udpRead;
-    
+
     //Initialize Curses
     initscr();
     //Capture special keys: ie DEL, Arrows
     //keypad(stdscr, TRUE);
-    
+
     //Create different windows
         //Scrolling feed
         //User input
     feed = newwin(LINES-2, COLS, 0, 0);//Down to bottom - 2 lines
     scrollWindow = new ScrollWindow(feed, LINES-2, COLS);
     input = newwin(1, COLS, LINES-1, 0);//Last line
-    
+
     //Fill second to last line with flat line
     wmove(stdscr, LINES-2, 0);
     for (int i = 0; i < COLS; i++) {
         waddch(stdscr, '-');
     }
     wrefresh(stdscr);
-    
+
     nodelay(input, TRUE);
     keypad(input, TRUE);
     string str = "";
@@ -86,27 +87,27 @@ int main(int argc, const char * argv[]) {
             str += c;
             continue;
         }
-        
+
         //Print new message in feed
         //scrollWindow->addLine(str, true);
-        
+
         //Broadcast new message
         char *cstr = new char[str.length()];
         strcpy(cstr, str.c_str());
         server->broadcast(cstr);
-        
+
         //Clear input
         wmove(input, 0, 0);
         for (int i = 0; i < COLS; i++) {
             waddch(input, ' ');
         }
         wmove(input, 0, 0);
-        
+
         //Update screen
         wrefresh(feed);
         wrefresh(input);
         str = "";
     }
-    
+
     endwin();
 }

@@ -23,12 +23,12 @@ UDPServer::UDPServer(int port)
     if ((fd = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
         perror("Counld not create socket");
     }
-        
+    
     //Name UDP Socket
-    //Bind to any client
+    //Bind to port
     memset((char *)&myaddr, 0, sizeof(myaddr));
     myaddr.sin_family = AF_INET;
-    myaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    myaddr.sin_addr.s_addr = INADDR_ANY;
     myaddr.sin_port = htons(port);
     
     if (bind(fd, (struct sockaddr *)&myaddr, sizeof(myaddr)) < 0) {

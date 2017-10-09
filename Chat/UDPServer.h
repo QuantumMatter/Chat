@@ -14,6 +14,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <string>
+#include <cstring>
 #include <pthread.h>
 #include <functional>
 
@@ -27,13 +28,13 @@ private:
     int fd;
     struct sockaddr_in cliaddr;
     static int p;//port
-    
+
 public:
     UDPServer(int port);
-    
+
     void broadcast(char *message);
     static void *listening_handler(void *test);
-    
+
     static List<UDPMessage> *messages;
     static std::function<void(UDPMessage *message)> readCallback;
 };
