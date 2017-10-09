@@ -11,6 +11,8 @@
 		ED1A8CA71F89B69800C3ABB6 /* Client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED1A8C9F1F89B69800C3ABB6 /* Client.cpp */; };
 		ED1A8CA81F89B69800C3ABB6 /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED1A8CA21F89B69800C3ABB6 /* Server.cpp */; };
 		ED1A8CA91F89B69800C3ABB6 /* UDPServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED1A8CA51F89B69800C3ABB6 /* UDPServer.cpp */; };
+		ED1A8CAC1F89FD0A00C3ABB6 /* libncurses.5.4.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = ED1A8CAB1F89FD0A00C3ABB6 /* libncurses.5.4.tbd */; };
+		ED1A8CAF1F8B0CA200C3ABB6 /* ScrollWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ED1A8CAD1F8B0CA200C3ABB6 /* ScrollWindow.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,6 +38,9 @@
 		ED1A8CA41F89B69800C3ABB6 /* UDPMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPMessage.h; sourceTree = "<group>"; };
 		ED1A8CA51F89B69800C3ABB6 /* UDPServer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPServer.cpp; sourceTree = "<group>"; };
 		ED1A8CA61F89B69800C3ABB6 /* UDPServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPServer.h; sourceTree = "<group>"; };
+		ED1A8CAB1F89FD0A00C3ABB6 /* libncurses.5.4.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libncurses.5.4.tbd; path = usr/lib/libncurses.5.4.tbd; sourceTree = SDKROOT; };
+		ED1A8CAD1F8B0CA200C3ABB6 /* ScrollWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScrollWindow.cpp; sourceTree = "<group>"; };
+		ED1A8CAE1F8B0CA200C3ABB6 /* ScrollWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollWindow.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED1A8CAC1F89FD0A00C3ABB6 /* libncurses.5.4.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,6 +60,7 @@
 			children = (
 				ED1A8C971F89B65300C3ABB6 /* Chat */,
 				ED1A8C961F89B65300C3ABB6 /* Products */,
+				ED1A8CAA1F89FD0A00C3ABB6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -77,8 +84,18 @@
 				ED1A8CA51F89B69800C3ABB6 /* UDPServer.cpp */,
 				ED1A8CA61F89B69800C3ABB6 /* UDPServer.h */,
 				ED1A8C981F89B65300C3ABB6 /* main.cpp */,
+				ED1A8CAD1F8B0CA200C3ABB6 /* ScrollWindow.cpp */,
+				ED1A8CAE1F8B0CA200C3ABB6 /* ScrollWindow.h */,
 			);
 			path = Chat;
+			sourceTree = "<group>";
+		};
+		ED1A8CAA1F89FD0A00C3ABB6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ED1A8CAB1F89FD0A00C3ABB6 /* libncurses.5.4.tbd */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,6 +157,7 @@
 			files = (
 				ED1A8CA71F89B69800C3ABB6 /* Client.cpp in Sources */,
 				ED1A8CA81F89B69800C3ABB6 /* Server.cpp in Sources */,
+				ED1A8CAF1F8B0CA200C3ABB6 /* ScrollWindow.cpp in Sources */,
 				ED1A8CA91F89B69800C3ABB6 /* UDPServer.cpp in Sources */,
 				ED1A8C991F89B65300C3ABB6 /* main.cpp in Sources */,
 			);

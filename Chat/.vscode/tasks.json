@@ -6,7 +6,7 @@
             "type": "shell",
             "command": "g++",
             "args": [
-                "-std=c++11", "main.cpp", "UDPServer.cpp"
+                "-std=c++11", "-lncurses","main.cpp", "UDPServer.cpp"
             ],
             "group": {
                 "kind": "build",
