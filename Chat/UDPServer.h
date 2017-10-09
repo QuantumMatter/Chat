@@ -13,6 +13,7 @@
 #include <iostream>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #include <string>
 #include <cstring>
 #include <pthread.h>
