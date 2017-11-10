@@ -41,10 +41,36 @@ UDPServer::UDPServer(int port)
     }
     
     //Set up broadcasting sockaddr
+    //Get broadcasting address
+    sockaddr_in *broad = NULL;
+    
+    int family, n;
+    struct ifaddrs *ifaddr, *ifa;
+    if (getifaddrs(&ifaddr) == -1) {
+        perror("get ifaddrs");
+        exit(EXIT_FAILURE);
+    }
+    for (ifa = ifaddr, n = 0; ifa != NULL; ifa = ifa->ifa_next, n++) {
+        if (ifa->ifa_addr == NULL) {
+            continue;
+        }
+        family = ifa->ifa_addr->sa_family;
+        if (family != AF_INET) {
+            continue;
+        }
+        struct sockaddr_in *test = (struct sockaddr_in *)ifa->ifa_addr;
+        if (test->sin_addr.s_addr == inet_addr("127.0.0.1")) {
+            continue;
+        }
+        broad = (struct sockaddr_in *)ifa->ifa_broadaddr;
+        break;
+    }
+    std::cout<<"Broadcast: "<<inet_ntoa(broad->sin_addr)<<std::endl;
+    
     memset((char *)&cliaddr, 0, sizeof(cliaddr));
     cliaddr.sin_family = AF_INET;
     cliaddr.sin_port = htons(port);
-    cliaddr.sin_addr.s_addr = inet_addr("255.255.255.255");
+    cliaddr.sin_addr.s_addr = broad->sin_addr.s_addr;//inet_addr("255.255.255.255");
     
     //Create message list
     messages = new List<UDPMessage>();
