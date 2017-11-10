@@ -13,6 +13,7 @@
 std::function<void(UDPMessage*)> UDPServer::readCallback;
 int UDPServer::p;
 List<UDPMessage> *UDPServer::messages;
+struct sockaddr_in *UDPServer::broadcast_addr;
 UDPServer::UDPServer(int port)
 {
     struct sockaddr_in myaddr;
@@ -42,7 +43,7 @@ UDPServer::UDPServer(int port)
     
     //Set up broadcasting sockaddr
     //Get broadcasting address
-    sockaddr_in *broad = NULL;
+    broadcast_addr = NULL;
     
     int family, n;
     struct ifaddrs *ifaddr, *ifa;
@@ -62,15 +63,14 @@ UDPServer::UDPServer(int port)
         if (test->sin_addr.s_addr == inet_addr("127.0.0.1")) {
             continue;
         }
-        broad = (struct sockaddr_in *)ifa->ifa_broadaddr;
+        broadcast_addr = (struct sockaddr_in *)ifa->ifa_broadaddr;
         break;
     }
-    std::cout<<"Broadcast: "<<inet_ntoa(broad->sin_addr)<<std::endl;
     
     memset((char *)&cliaddr, 0, sizeof(cliaddr));
     cliaddr.sin_family = AF_INET;
     cliaddr.sin_port = htons(port);
-    cliaddr.sin_addr.s_addr = broad->sin_addr.s_addr;//inet_addr("255.255.255.255");
+    cliaddr.sin_addr.s_addr = broadcast_addr->sin_addr.s_addr;//inet_addr("255.255.255.255");
     
     //Create message list
     messages = new List<UDPMessage>();
@@ -90,7 +90,7 @@ void *UDPServer::listening_handler(void *sock)
     memset((char *)&baddr, 0, sizeof(baddr));
     baddr.sin_family = AF_INET;
     baddr.sin_port = htons(p);
-    baddr.sin_addr.s_addr = inet_addr("255.255.255.255");
+    baddr.sin_addr.s_addr = broadcast_addr->sin_addr.s_addr; //inet_addr("255.255.255.255");
     socklen_t bSize = sizeof(baddr);
     
     int mysock = *(int*)sock;

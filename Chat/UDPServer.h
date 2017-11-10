@@ -29,6 +29,7 @@ class UDPServer {
 private:
     int fd;
     struct sockaddr_in cliaddr;
+    static struct sockaddr_in *broadcast_addr;
     static int p;//port
 
 public:
